@@ -32,6 +32,7 @@
 <script>
 import { ref } from 'vue';
 import axios from 'axios';
+import { url } from '@/data';
 
 export default {
   setup() {
@@ -42,9 +43,9 @@ export default {
     const sendPasswordResetLink = async () => {
       try {
         // Get CSRF cookie first
-        await axios.get('http://localhost:8000/sanctum/csrf-cookie');
+        await axios.get(`sanctum/csrf-cookie`);
 
-        const response = await axios.post('http://localhost:8000/api/forgot-password', { email: email.value });
+        const response = await axios.post(`${url}forgot-password`, { email: email.value });
         console.log(response.data); // Log the response
         if (response.data.message) {
           message.value = response.data.message; // Success message
