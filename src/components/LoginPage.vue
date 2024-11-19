@@ -27,6 +27,14 @@
         >
           Login
         </button>
+        <div class="text-center mt-4">
+          <a
+            href="/passwordlink"
+            class="text-sm text-indigo-600 hover:underline"
+          >
+            Forgot Password?
+          </a>
+        </div>
         <div v-if="error" class="text-sm text-red-600 mt-4">
           {{ error }}
         </div>
@@ -45,7 +53,6 @@ const email = ref('');
 const password = ref('');
 const error = ref('');
 const router = useRouter();
-
 
 const login = async () => {
   try {

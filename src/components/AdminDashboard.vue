@@ -33,10 +33,10 @@
 
       <!-- Content Sections -->
       <section v-if="activeSection === 'profile'" class="profile-section">
-        <h4>Profile</h4>
+        <h4 class="ml-10">Profile</h4>
         <div class="user-info">
-          <p><strong>Name:</strong> {{ user.name }}</p>
-          <p><strong>Email:</strong> {{ user.email }}</p>
+          <p class="ml-10"><strong>Name:</strong> {{ user.name }}</p>
+          <p class="ml-10"><strong>Email:</strong> {{ user.email }}</p>
         </div>
       </section>
 

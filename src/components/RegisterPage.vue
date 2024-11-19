@@ -61,10 +61,24 @@
         <div v-if="successMessage" class="text-sm text-green-600 mt-4">
           {{ successMessage }}
         </div>
+
+        <!-- Anchor tag for login -->
+        <div class="text-center mt-4">
+          <span class="text-sm text-gray-600">
+            Already have an account?
+          </span>
+          <a
+            href="/login"
+            class="text-sm text-indigo-600 hover:underline ml-1"
+          >
+            Login here
+          </a>
+        </div>
       </form>
     </div>
   </div>
 </template>
+
   
 <script setup>
 import { ref, onMounted } from 'vue';
