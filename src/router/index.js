@@ -16,6 +16,7 @@ import UserNews from "@/components/UserNews.vue";
 import AdminNews from "@/components/AdminNews.vue";
 import NavBar from "@/components/NavBar.vue";
 import SettIngs from "@/components/SettIngs.vue";
+import ExternalNews from "@/components/ExternalNews.vue";
 
 
 
@@ -30,6 +31,8 @@ const routes = [
     {path: "/news", component: UserNews},
     {path: "/navbar", component: NavBar},
     {path: "/settings", component: SettIngs},
+    {path: "/external", component: ExternalNews},
+
 
 
 
