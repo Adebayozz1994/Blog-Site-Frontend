@@ -15,6 +15,7 @@ import AdminPasswordUpdate from "@/components/AdminPasswordUpdate.vue";
 import UserNews from "@/components/UserNews.vue";
 import AdminNews from "@/components/AdminNews.vue";
 import NavBar from "@/components/NavBar.vue";
+import SettIngs from "@/components/SettIngs.vue";
 
 
 
@@ -28,6 +29,8 @@ const routes = [
     {path: "/signup", component: RegisterPage},
     {path: "/news", component: UserNews},
     {path: "/navbar", component: NavBar},
+    {path: "/settings", component: SettIngs},
+
 
 
 
