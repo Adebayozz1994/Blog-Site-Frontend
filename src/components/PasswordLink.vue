@@ -29,44 +29,37 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { ref } from 'vue';
 import axios from 'axios';
 import { url } from '@/data';
 
-export default {
-  setup() {
-    const email = ref('');
-    const message = ref('');
-    const error = ref('');
+const email = ref('');
+const message = ref('');
+const error = ref('');
 
-    const sendPasswordResetLink = async () => {
-      try {
-        // Get CSRF cookie first
-        await axios.get(`sanctum/csrf-cookie`);
+const sendPasswordResetLink = async () => {
+  try {
+    // Get CSRF cookie first
+    await axios.get(`sanctum/csrf-cookie`);
 
-        const response = await axios.post(`${url}forgot-password`, { email: email.value });
-        console.log(response.data); // Log the response
-        if (response.data.message) {
-          message.value = response.data.message; // Success message
-          error.value = '';
-        } else if (response.data.error) {
-          error.value = response.data.error; // Error message
-          message.value = '';
-        }
-      } catch (err) {
-        console.error(err.response?.data || err); // Log the error response
-        error.value = err.response?.data?.error || 'An error occurred';
-        message.value = '';
-      }
-    };
-
-    return {
-      email,
-      message,
-      error,
-      sendPasswordResetLink,
-    };
-  },
+    const response = await axios.post(`${url}forgot-password`, { email: email.value });
+    console.log(response.data); // Log the response
+    if (response.data.message) {
+      message.value = response.data.message; // Success message
+      error.value = '';
+    } else if (response.data.error) {
+      error.value = response.data.error; // Error message
+      message.value = '';
+    }
+  } catch (err) {
+    console.error(err.response?.data || err); // Log the error response
+    error.value = err.response?.data?.error || 'An error occurred';
+    message.value = '';
+  }
 };
 </script>
+
+<style scoped>
+/* Add custom styles if needed */
+</style>

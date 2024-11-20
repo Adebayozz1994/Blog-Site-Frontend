@@ -40,7 +40,7 @@ const fetchUserInfo = async () => {
 watch(
   () => route.path,
   (newPath) => {
-    showNavBar.value = !['/login', '/signup', '/passwordlink', '/reset-password/:token'].includes(newPath);
+    showNavBar.value = !['/login', '/signup', '/passwordlink', '/reset-password/:token','/'].includes(newPath);
   },
   { immediate: true }
 );
@@ -85,9 +85,9 @@ onMounted(() => {
     <!-- Second Navbar with Navigation Links -->
     <nav v-if="showNavBar" class="bg-gray-600 text-white p-2">
       <ul class="flex space-x-4">
-        <li><router-link to="/navbar" class="hover:text-gray-400">Home</router-link></li>
-        <li><router-link to="#" class="hover:text-gray-400">World News</router-link></li>
-        <li><router-link to="#" class="hover:text-gray-400">About</router-link></li>
+        <li><router-link to="/news" class="hover:text-gray-400">local news</router-link></li>
+        <li><router-link to="/external" class="hover:text-gray-400">World News</router-link></li>
+        <li><router-link to="/about" class="hover:text-gray-400">About</router-link></li>
       </ul>
     </nav>
 

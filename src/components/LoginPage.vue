@@ -64,7 +64,7 @@ const login = async () => {
     console.log('Login response:', response.data);
 
     if (response.data.status) {
-      router.push('/dashboard');
+      router.push('/navbar');
     } else {
       error.value = response.data.message || 'Login failed';
     }
