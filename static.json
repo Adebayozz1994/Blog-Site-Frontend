@@ -1,0 +1,11 @@
+{
+    "headers": {
+      "/**": {
+        "Access-Control-Allow-Origin": "*"
+      }
+    },
+    "redirects": [
+      { "source": "/old-page", "destination": "/new-page", "type": 301 }
+    ]
+  }
+  
