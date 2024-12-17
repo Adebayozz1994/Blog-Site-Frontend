@@ -1,80 +1,47 @@
 <template>
   <div class="min-h-screen bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 flex flex-col items-center justify-center text-white">
-    <!-- Loader -->
-    <div v-if="isLoading" class="loader"></div>
+    <header class="absolute top-0 w-full flex justify-between items-center p-6 bg-transparent">
+      <h1 class="text-3xl font-bold tracking-wide">Swift-Blog</h1>
+    </header>
 
-    <!-- Main Content -->
-    <div v-else>
-      <header class="absolute top-0 left-0 flex items-start p-6 bg-transparent">
-        <h1 class="text-3xl font-bold tracking-wide ml-6">Swift-Blog</h1>
-      </header>
+    <main class="flex-1 flex flex-col justify-center items-center">
+      <div class="text-center mb-10">
+        <h2 class="text-4xl font-extrabold mb-4">
+          Welcome to Swift-Blog!
+        </h2>
+        <p class="text-lg max-w-2xl">
+          Swift-Blog is your go-to platform for staying updated with real-time
+          news and insightful blogs. Join us to be part of an engaging community.
+        </p>
+      </div>
+      <div class="mt-10 space-y-6">
+        <a
+          href="/login"
+          class="block text-center py-3 px-6 bg-white text-indigo-500 font-semibold rounded-lg shadow-lg transform transition-all hover:-translate-y-1 hover:scale-105"
+        >
+          Login
+        </a>
+        <a
+          href="/signup"
+          class="block text-center py-3 px-6 bg-indigo-700 font-semibold rounded-lg shadow-lg transform transition-all hover:-translate-y-1 hover:scale-105"
+        >
+          Sign Up
+        </a>
+      </div>
+    </main>
 
-      <main class="flex-1 flex flex-col justify-center items-center">
-        <div class="text-center mb-10">
-          <h2 class="text-4xl font-extrabold mb-4">Welcome to Swift-Blog!</h2>
-          <p class="text-lg max-w-2xl">
-            Swift-Blog is your go-to platform for staying updated with real-time
-            news and insightful blogs. Join us to be part of an engaging community.
-          </p>
-        </div>
-        <div class="mt-10 space-y-6">
-          <a
-            href="/login"
-            class="block text-center py-3 px-6 bg-white text-indigo-500 font-semibold rounded-lg shadow-lg transform transition-all hover:-translate-y-1 hover:scale-105"
-          >
-            Login
-          </a>
-          <a
-            href="/signup"
-            class="block text-center py-3 px-6 bg-indigo-700 font-semibold rounded-lg shadow-lg transform transition-all hover:-translate-y-1 hover:scale-105"
-          >
-            Sign Up
-          </a>
-        </div>
-      </main>
-
-      <footer class="absolute bottom-0 w-full py-4 text-center text-sm bg-transparent">
-        &copy; {{ new Date().getFullYear() }} Swift-Blog. All rights reserved.
-      </footer>
-    </div>
+    <footer class="absolute bottom-0 w-full py-4 text-center text-sm bg-transparent">
+      &copy; {{ new Date().getFullYear() }} Swift-Blog. All rights reserved.
+    </footer>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-
-const isLoading = ref(true);
-
-onMounted(() => {
-  // Display the loader for 3 seconds
-  setTimeout(() => {
-    isLoading.value = false;
-  }, 3000);
-});
+// No logic required as it's a static landing page
 </script>
 
 <style scoped>
-/* Loader Styles */
-.loader {
-  color: #000;
-  width: 4px;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  box-shadow: 19px 0 0 7px, 38px 0 0 3px, 57px 0 0 0;
-  transform: translateX(-38px);
-  animation: l21 0.5s infinite alternate linear;
-}
-
-@keyframes l21 {
-  50% {
-    box-shadow: 19px 0 0 3px, 38px 0 0 7px, 57px 0 0 3px;
-  }
-  100% {
-    box-shadow: 19px 0 0 0, 38px 0 0 3px, 57px 0 0 7px;
-  }
-}
-
-/* Main Page Styles */
+/* Animations for the header and buttons */
 header {
   animation: fadeIn 1s ease-out;
 }
