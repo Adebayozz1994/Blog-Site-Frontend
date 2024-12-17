@@ -1,6 +1,12 @@
 <template>
   <div class="min-h-screen bg-gray-100 py-8">
-    <div class="max-w-4xl mx-auto bg-white shadow-md rounded-lg p-6">
+    <!-- Loader -->
+    <div v-if="loading" class="flex items-center justify-center h-screen">
+      <div class="spinner-border animate-spin inline-block w-16 h-16 border-4 rounded-full text-indigo-500"></div>
+    </div>
+
+    <!-- Main Content -->
+    <div v-else class="max-w-4xl mx-auto bg-white shadow-md rounded-lg p-6">
       <h1 class="text-2xl font-bold mb-6 text-center text-gray-800">Dashboard</h1>
 
       <div v-if="user" class="space-y-6">
@@ -100,7 +106,6 @@
   </div>
 </template>
 
-
 <script setup>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
@@ -108,6 +113,7 @@ import { url } from '../data';
 import { useRouter } from 'vue-router';
 
 const user = ref(null);
+const loading = ref(true); // Add loading state
 const router = useRouter();
 
 const profilePicture = ref(null);
@@ -130,6 +136,8 @@ const fetchUserInfo = async () => {
     }
   } catch (error) {
     console.error('Error fetching user information:', error);
+  } finally {
+    loading.value = false; // Hide loader when data is fetched
   }
 };
 
@@ -207,3 +215,21 @@ onMounted(() => {
   fetchUserInfo();
 });
 </script>
+
+<style>
+.spinner-border {
+  border: 4px solid transparent;
+  border-top: 4px solid currentColor;
+  border-right: 4px solid currentColor;
+  border-radius: 50%;
+  width: 3rem;
+  height: 3rem;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+</style>

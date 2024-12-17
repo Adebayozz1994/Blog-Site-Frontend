@@ -1,26 +1,79 @@
 <template>
-  <div class="flex justify-center items-center min-h-screen bg-gray-100">
+  <div v-if="pageLoading" class="fixed inset-0 flex justify-center items-center bg-gray-100 z-50">
+    <!-- Page-Level Loader -->
+    <svg
+      class="animate-spin h-10 w-10 text-indigo-600"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+    >
+      <circle
+        class="opacity-25"
+        cx="12"
+        cy="12"
+        r="10"
+        stroke="currentColor"
+        stroke-width="4"
+      ></circle>
+      <path
+        class="opacity-75"
+        fill="currentColor"
+        d="M4 12a8 8 0 018-8v4a4 4 0 100 8v4a8 8 0 01-8-8z"
+      ></path>
+    </svg>
+  </div>
+
+  <div v-else class="flex justify-center items-center min-h-screen bg-gray-100">
     <div class="bg-white shadow-md rounded-lg p-8 max-w-md w-full">
       <h1 class="text-2xl font-semibold mb-6 text-center">Reset Password</h1>
       <form @submit.prevent="sendPasswordResetLink" class="space-y-4">
         <div>
+          <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
           <input
             type="email"
+            id="email"
             v-model="email"
             placeholder="Enter your email"
             required
             class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
           />
         </div>
+
         <button
           type="submit"
-          class="w-full flex justify-center py-2 px-4 border border-transparent rounded-lg shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          :disabled="loading"
+          class="w-full flex justify-center items-center py-2 px-4 border border-transparent rounded-lg shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-indigo-400"
         >
-          Send Reset Link
+          <span v-if="!loading">Send Reset Link</span>
+          <svg
+            v-else
+            class="animate-spin h-5 w-5 text-white"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              class="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              stroke-width="4"
+            ></circle>
+            <path
+              class="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8v4a4 4 0 100 8v4a8 8 0 01-8-8z"
+            ></path>
+          </svg>
         </button>
+
+        <!-- Success Message -->
         <div v-if="message" class="text-sm text-green-600 mt-4">
           {{ message }}
         </div>
+
+        <!-- Error Message -->
         <div v-if="error" class="text-sm text-red-600 mt-4">
           {{ error }}
         </div>
@@ -30,36 +83,53 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import axios from 'axios';
-import { url } from '@/data';
+import { url } from '@/data'; // Assuming base URL is set here
 
+// Reactive properties
 const email = ref('');
 const message = ref('');
 const error = ref('');
+const loading = ref(false);
+const pageLoading = ref(true); // Page loader state
 
+// Function to send password reset link
 const sendPasswordResetLink = async () => {
-  try {
-    // Get CSRF cookie first
-    await axios.get(`sanctum/csrf-cookie`);
+  loading.value = true; // Start button loader
+  message.value = '';
+  error.value = '';
 
+  try {
+    // Fetch CSRF token
+    await axios.get(`${url}sanctum/csrf-cookie`);
+
+    // Send the password reset request
     const response = await axios.post(`${url}forgot-password`, { email: email.value });
-    console.log(response.data); // Log the response
+
+    // Handle success
     if (response.data.message) {
-      message.value = response.data.message; // Success message
-      error.value = '';
-    } else if (response.data.error) {
-      error.value = response.data.error; // Error message
-      message.value = '';
+      message.value = response.data.message;
+    } else {
+      throw new Error(response.data.error || 'Unexpected response format');
     }
   } catch (err) {
-    console.error(err.response?.data || err); // Log the error response
-    error.value = err.response?.data?.error || 'An error occurred';
-    message.value = '';
+    // Handle errors
+    console.error('Error:', err.response?.data || err.message || err);
+    error.value = err.response?.data?.message || 'Failed to send reset link. Please try again.';
+  } finally {
+    loading.value = false; // Stop button loader
   }
 };
+
+// Hide page loader after the page is fully loaded
+onMounted(() => {
+  setTimeout(() => {
+    pageLoading.value = false; // Stop page loader
+  }, 1000); // Optional delay for smooth transition
+});
 </script>
 
 <style scoped>
-/* Add custom styles if needed */
+/* Optional styles for smooth loader transitions */
 </style>

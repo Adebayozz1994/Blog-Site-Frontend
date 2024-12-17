@@ -74,7 +74,7 @@ onMounted(() => {
             <ul>
               <li><a href="/dashboard" class="block px-4 py-2">Profile</a></li>
               <li><a href="/settings" class="block px-4 py-2">Settings</a></li>
-              <li><a href="/settings" class="block px-4 py-2">Contacts</a></li>
+              <li><a href="/contact" class="block px-4 py-2">Contacts</a></li>
               <li><a href="#" class="block px-4 py-2" @click="logout">Logout</a></li>
             </ul>
           </div>

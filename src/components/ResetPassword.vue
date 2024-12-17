@@ -56,10 +56,11 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router'; // Import useRouter
 import axios from 'axios';
 
 const route = useRoute();
+const router = useRouter(); // Initialize router
 const token = ref('');
 const email = ref('');
 const password = ref('');
@@ -84,9 +85,15 @@ const resetPassword = async () => {
     });
     message.value = response.data.status; // Assuming the response returns a status message
     error.value = '';
+
+    // Redirect to login page after a delay to show the success message
+    setTimeout(() => {
+      router.push('/login'); // Navigate to the login page
+    }, 2000); // Adjust delay as needed
   } catch (errorResponse) {
     error.value = errorResponse.response.data.error || 'An error occurred';
     message.value = '';
   }
 };
 </script>
+

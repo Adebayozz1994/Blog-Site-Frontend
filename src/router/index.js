@@ -18,6 +18,7 @@ import NavBar from "@/components/NavBar.vue";
 import SettIngs from "@/components/SettIngs.vue";
 import ExternalNews from "@/components/ExternalNews.vue";
 import AboutPage from "@/components/AboutPage.vue";
+import ConTact from "@/components/ConTact.vue";
 
 
 
@@ -34,6 +35,9 @@ const routes = [
     {path: "/settings", component: SettIngs},
     {path: "/external", component: ExternalNews},
     {path: "/about", component: AboutPage},
+    {path: "/contact", component: ConTact},
+
+    
 
 
 

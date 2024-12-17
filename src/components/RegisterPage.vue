@@ -1,6 +1,10 @@
 <template>
   <div class="flex justify-center items-center min-h-screen bg-gray-100">
-    <div class="bg-white shadow-md rounded-lg p-8 max-w-md w-full">
+    <!-- Loader -->
+    <div v-if="isLoading" class="loader"></div>
+
+    <!-- Registration Form -->
+    <div v-else class="bg-white shadow-md rounded-lg p-8 max-w-md w-full">
       <h1 class="text-2xl font-semibold mb-6 text-center">Register</h1>
       <form @submit.prevent="registerUser" class="space-y-4">
         <div>
@@ -79,7 +83,6 @@
   </div>
 </template>
 
-  
 <script setup>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
@@ -93,7 +96,8 @@ const form = ref({
   password_confirmation: '',
 });
 
-const loading = ref(false);
+const isLoading = ref(true); // State for the initial loader
+const loading = ref(false); // State for the button during submission
 const errorMessage = ref('');
 const successMessage = ref('');
 const router = useRouter();
@@ -101,16 +105,18 @@ const router = useRouter();
 // Function to get the CSRF token
 const getCsrfToken = async () => {
   try {
-    // Make a GET request to set the CSRF cookie
     await axios.get(`${url}sanctum/csrf-cookie`);
   } catch (error) {
     console.error('Error fetching CSRF cookie:', error);
   }
 };
 
-// Call the CSRF token method when the component is mounted
+// Show loader initially
 onMounted(() => {
   getCsrfToken();
+  setTimeout(() => {
+    isLoading.value = false; // Hide loader and show form
+  }, 2000); // Adjust delay as needed
 });
 
 const registerUser = async () => {
@@ -119,15 +125,14 @@ const registerUser = async () => {
   successMessage.value = '';
   
   try {
-    // Send the registration request
     const response = await axios.post(`${url}register`, form.value, {
-      withCredentials: true, // Ensure cookies are sent for session
+      withCredentials: true,
     });
     console.log(response.data);
     
     successMessage.value = 'Registration successful! Redirecting...';
     setTimeout(() => {
-      router.push('/login'); // Redirect to the dashboard or any other page after registration
+      router.push('/login');
     }, 2000);
   } catch (error) {
     errorMessage.value = 'Error: ' + (error.response?.data?.message || 'Something went wrong');
@@ -136,3 +141,25 @@ const registerUser = async () => {
   }
 };
 </script>
+
+<style scoped>
+/* Loader Styles */
+.loader {
+  color: #000;
+  width: 4px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  box-shadow: 19px 0 0 7px, 38px 0 0 3px, 57px 0 0 0;
+  transform: translateX(-38px);
+  animation: l21 0.5s infinite alternate linear;
+}
+
+@keyframes l21 {
+  50% {
+    box-shadow: 19px 0 0 3px, 38px 0 0 7px, 57px 0 0 3px;
+  }
+  100% {
+    box-shadow: 19px 0 0 0, 38px 0 0 3px, 57px 0 0 7px;
+  }
+}
+</style>
