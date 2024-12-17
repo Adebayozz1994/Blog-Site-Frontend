@@ -1,10 +1,6 @@
 <template>
   <div class="flex justify-center items-center min-h-screen bg-gray-100">
-    <!-- Loader -->
-    <div v-if="isLoading" class="loader"></div>
-
-    <!-- Login Form -->
-    <div v-else class="bg-white shadow-md rounded-lg p-8 max-w-md w-full">
+    <div class="bg-white shadow-md rounded-lg p-8 max-w-md w-full">
       <h1 class="text-2xl font-semibold mb-6 text-center">Login</h1>
       <form @submit.prevent="login" class="space-y-4">
         <div>
@@ -56,7 +52,6 @@ import { useRouter } from 'vue-router';
 const email = ref('');
 const password = ref('');
 const error = ref('');
-const isLoading = ref(true); // Loading state
 const router = useRouter();
 
 const login = async () => {
@@ -82,33 +77,6 @@ const login = async () => {
   }
 };
 
-// Simulate loading delay
-onMounted(() => {
-  getCsrfToken();
-  setTimeout(() => {
-    isLoading.value = false; // Hide loader after a delay
-  }, 2000); // Adjust delay as needed
-});
+// Fetch CSRF token when the component is mounted
+onMounted(getCsrfToken);
 </script>
-
-<style scoped>
-/* Loader Styles */
-.loader {
-  color: #000;
-  width: 4px;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  box-shadow: 19px 0 0 7px, 38px 0 0 3px, 57px 0 0 0;
-  transform: translateX(-38px);
-  animation: l21 0.5s infinite alternate linear;
-}
-
-@keyframes l21 {
-  50% {
-    box-shadow: 19px 0 0 3px, 38px 0 0 7px, 57px 0 0 3px;
-  }
-  100% {
-    box-shadow: 19px 0 0 0, 38px 0 0 3px, 57px 0 0 7px;
-  }
-}
-</style>
