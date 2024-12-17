@@ -26,6 +26,12 @@
         } catch (err) {
           console.error('Error fetching external news:', err);
         }
+        try {
+          const response = await axios.get('http://localhost:8000/api/fetch-external-news');
+          externalNewsArticles.value = response.data;
+        } catch (err) {
+          console.error('Error fetching external news:', err);
+        }
       };
   
       // Fetch news when the component is mounted
