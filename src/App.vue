@@ -36,11 +36,12 @@ const fetchUserInfo = async () => {
   }
 };
 
-// Hide NavBar on specific pages (e.g., login page)
+// Hide NavBar on specific pages (e.g., login page or admin routes)
 watch(
   () => route.path,
   (newPath) => {
-    showNavBar.value = !['/login', '/signup', '/passwordlink', '/reset-password/:token','/'].includes(newPath);
+    showNavBar.value = !['/login', '/signup', '/passwordlink', '/reset-password/:token', '/'].includes(newPath) &&
+                       !newPath.startsWith('/admin'); // Hide for admin routes
   },
   { immediate: true }
 );
