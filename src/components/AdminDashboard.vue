@@ -8,6 +8,7 @@
           <li @click="showSection('profile')">Profile</li>
           <li @click="showSection('updatePassword')">Update Password</li>
           <li @click="showSection('uploadPicture')">Upload Picture</li>
+          <li @click="navigateToNews">Upload News</li>
           <li @click="logout">Logout</li>
           <li @click="register">Register</li>
         </ul>
@@ -82,7 +83,13 @@ import axios from "axios";
 const user = ref({ name: "", email: "", profile_picture_url: "" });
 const router = useRouter();
 const activeSection = ref("profile");
-const isSidebarCollapsed = ref(false); // Sidebar collapse state
+const isSidebarCollapsed = ref(false); 
+
+
+const navigateToNews = () => {
+  router.push('/admin/news');
+};
+
 
 // Toggle sidebar visibility
 const toggleSidebar = () => {
