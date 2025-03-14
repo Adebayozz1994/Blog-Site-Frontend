@@ -137,19 +137,27 @@ const fetchUserInfo = async () => {
   } catch (error) {
     console.error('Error fetching user information:', error);
   } finally {
-    loading.value = false; // Hide loader when data is fetched
+    loading.value = false; 
   }
 };
 
 const logout = async () => {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    console.error('No token found, user not logged in.');
+    router.push('/login'); 
+    return;
+  }
+
   try {
-    await axios.post(`${url}logout`);
-    user.value = null;
+    await axios.post(`${url}logout`, {}, { withCredentials: true });
+    localStorage.removeItem('token'); 
     router.push('/login');
-  } catch (error) {
-    console.error('Error logging out:', error);
+  } catch (err) {
+    console.error('Logout failed:', err.response?.data || err.message);
   }
 };
+
 
 const updatePassword = async () => {
   try {

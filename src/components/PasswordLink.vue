@@ -77,10 +77,18 @@
         <div v-if="error" class="text-sm text-red-600 mt-4">
           {{ error }}
         </div>
+
+        <!-- Back to Login Link -->
+        <div class="text-center mt-4">
+          <router-link to="/login" class="text-sm text-indigo-600 hover:underline">
+            Back to Login
+          </router-link>
+        </div>
       </form>
     </div>
   </div>
 </template>
+
 
 <script setup>
 import { ref, onMounted } from 'vue';

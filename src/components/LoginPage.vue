@@ -32,12 +32,15 @@
           Login
         </button>
         <div class="text-center mt-4">
-          <a
-            href="/passwordlink"
-            class="text-sm text-indigo-600 hover:underline"
-          >
+          <a href="/passwordlink" class="text-sm text-indigo-600 hover:underline">
             Forgot Password?
           </a>
+        </div>
+        <div class="text-center mt-4">
+          <span class="text-sm text-gray-600">Don't have an account?</span>
+          <router-link to="/signup" class="text-sm text-indigo-600 hover:underline">
+            Register here
+          </router-link>
         </div>
         <div v-if="error" class="text-sm text-red-600 mt-4">
           {{ error }}
@@ -46,6 +49,7 @@
     </div>
   </div>
 </template>
+
 
 <script setup>
 import { ref, onMounted } from 'vue';
@@ -56,11 +60,31 @@ import { useRouter } from 'vue-router';
 const email = ref('');
 const password = ref('');
 const error = ref('');
-const isLoading = ref(true); // Loading state
+const isLoading = ref(true); 
 const router = useRouter();
+
+
+
+
+const checkAuth = async () => {
+  try {
+    // 🔹 Fetch current user
+    const response = await axios.get(`${url}user`, { withCredentials: true });
+    
+    if (response.data) {
+      console.log('User is already authenticated:', response.data);
+      router.push('/navbar'); 
+    }
+  } catch (err) {
+    console.log('User is not authenticated');
+  } finally {
+    isLoading.value = false; 
+  }
+};
 
 const login = async () => {
   try {
+    
     const response = await axios.post(`${url}login`, {
       email: email.value,
       password: password.value,
@@ -85,9 +109,10 @@ const login = async () => {
 // Simulate loading delay
 onMounted(() => {
   getCsrfToken();
+  checkAuth ();
   setTimeout(() => {
-    isLoading.value = false; // Hide loader after a delay
-  }, 2000); // Adjust delay as needed
+    isLoading.value = false; 
+  }, 2000); 
 });
 </script>
 

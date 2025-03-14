@@ -2,6 +2,7 @@
   <div class="min-h-screen flex items-center justify-center bg-gray-100">
     <div class="w-full max-w-md bg-white p-8 rounded-lg shadow-lg">
       <h2 class="text-2xl font-bold text-center mb-6 text-gray-700">Admin Registration</h2>
+      
       <form @submit.prevent="registerAdmin" class="space-y-4">
         <div>
           <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
@@ -57,6 +58,7 @@
           Register
         </button>
 
+        <!-- Success/Error Messages -->
         <div v-if="status !== null" class="text-center mt-4">
           <p :class="status ? 'text-green-600' : 'text-red-600'">{{ message }}</p>
           <ul v-if="errors.length" class="mt-2 text-red-600 text-sm list-disc list-inside">
@@ -64,6 +66,16 @@
           </ul>
         </div>
       </form>
+
+      <!-- Back to Login -->
+      <div class="mt-4 text-center">
+        <p class="text-sm text-gray-600">
+          Already have an account? 
+          <router-link to="/admin/login" class="text-blue-600 hover:underline">
+            Login
+          </router-link>
+        </p>
+      </div>
     </div>
   </div>
 </template>
