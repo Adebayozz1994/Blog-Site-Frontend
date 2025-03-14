@@ -145,7 +145,7 @@ const fetchNews = async () => {
   } catch (error) {
     console.error("Error fetching news:", error);
   } finally {
-    loading.value = false; // Set loading to false after data is fetched
+    loading.value = false; 
   }
 };
 

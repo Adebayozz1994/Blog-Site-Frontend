@@ -37,11 +37,11 @@
 </template>
 
 <script setup>
-// No logic required as it's a static landing page
+
 </script>
 
 <style scoped>
-/* Animations for the header and buttons */
+
 header {
   animation: fadeIn 1s ease-out;
 }

@@ -17,8 +17,9 @@ const toggleDropdown = () => {
 const logout = async () => {
   try {
     await axios.post(`${url}logout`);
-    user.value = null;
-    router.push('/login');
+    localStorage.removeItem("user"); // Remove user data
+    user.value = { email: '', profile_picture_url: '' }; // Reset user state
+    router.push('/login'); // Navigate to login
   } catch (error) {
     console.error('Error logging out:', error);
   }
@@ -26,27 +27,38 @@ const logout = async () => {
 
 const fetchUserInfo = async () => {
   try {
-    const response = await axios.get(`${url}user`);
-    user.value = response.data.user;
-    if (user.value.profile_picture) {
-      user.value.profile_picture_url = `http://localhost:8000/storage/profile_picture/${user.value.profile_picture}`;
+    // Check if user data exists in localStorage
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      user.value = JSON.parse(storedUser);
+    } else {
+      // Fetch from API if not found in storage
+      const response = await axios.get(`${url}user`);
+      console.log(response.data);
+      user.value = response.data.user;
+      
+      // Construct the profile picture URL
+      if (user.value.profile_picture) {
+        user.value.profile_picture_url = `http://localhost:8000/storage/profile_picture/${user.value.profile_picture}`;
+      }
+
+      // Store in localStorage
+      localStorage.setItem("user", JSON.stringify(user.value));
     }
   } catch (error) {
-    console.error('Error fetching user info:', error);
+    console.error("User not authenticated:", error.response?.data?.message);
   }
 };
 
-// Hide NavBar on specific pages (e.g., login page or admin routes)
 watch(
   () => route.path,
   (newPath) => {
     showNavBar.value = !['/login', '/signup', '/passwordlink', '/reset-password/:token', '/'].includes(newPath) &&
-                       !newPath.startsWith('/admin'); // Hide for admin routes
+                       !newPath.startsWith('/admin');
   },
   { immediate: true }
 );
 
-// Fetch user info on component mount
 onMounted(() => {
   fetchUserInfo();
 });
@@ -58,7 +70,6 @@ onMounted(() => {
     <nav v-if="showNavBar" class="bg-gray-800 text-white p-4 flex items-center justify-between">
       <div class="text-xl font-semibold cursor-pointer" @click="router.push('/')">SWIFT-BLOG</div>
       <div class="flex items-center space-x-4">
-        <!-- Dynamically display the profile image -->
         <img 
           :src="user.profile_picture_url || 'http://localhost:8000/storage/profile_picture/default.jpg'" 
           alt="User Image" 
@@ -86,7 +97,7 @@ onMounted(() => {
     <!-- Second Navbar with Navigation Links -->
     <nav v-if="showNavBar" class="bg-gray-600 text-white p-2">
       <ul class="flex space-x-4">
-        <li><router-link to="/news" class="hover:text-gray-400">local news</router-link></li>
+        <li><router-link to="/news" class="hover:text-gray-400">Local News</router-link></li>
         <li><router-link to="/external" class="hover:text-gray-400">World News</router-link></li>
         <li><router-link to="/about" class="hover:text-gray-400">About</router-link></li>
       </ul>
@@ -97,7 +108,6 @@ onMounted(() => {
 </template>
 
 <style scoped>
-/* Add your scoped CSS styles here */
 .cursor-pointer {
   cursor: pointer;
 }
