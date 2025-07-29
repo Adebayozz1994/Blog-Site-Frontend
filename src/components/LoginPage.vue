@@ -73,7 +73,7 @@ const checkAuth = async () => {
     
     if (response.data) {
       console.log('User is already authenticated:', response.data);
-      router.push('/navbar'); 
+      router.push('/newspage'); 
     }
   } catch (err) {
     console.log('User is not authenticated');
@@ -93,7 +93,7 @@ const login = async () => {
     console.log('Login response:', response.data);
 
     if (response.data.status) {
-      router.push('/navbar');
+      router.push('/newspage');
     } else {
       error.value = response.data.message || 'Login failed';
     }

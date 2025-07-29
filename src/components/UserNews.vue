@@ -1,6 +1,6 @@
 <template>
-  <div class="p-6">
-    <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">News Feed</h1>
+  <div class="p-6 bg-gray-50 min-h-screen">
+    <h1 class="text-4xl font-extrabold text-center text-gray-900 mb-10">News Feed</h1>
     
     <!-- Loader -->
     <div v-if="loading" class="flex justify-center items-center h-64">
@@ -12,106 +12,100 @@
       <div
         v-for="news in newsFeed"
         :key="news.id"
-        class="news-post border rounded-lg p-2 mb-2 shadow-lg bg-white"
+        class="news-post bg-white rounded-xl p-6 mb-8 shadow-lg transform transition-all hover:shadow-2xl hover:-translate-y-1"
       >
-        <!-- Initial View: Topic, Image, Likes, and Comments -->
-        <div
-          v-if="!news.showFullDetails"
-          @click="toggleFullDetails(news)"
-          class="cursor-pointer"
-        >
-          <h2 class="text-2xl font-bold text-gray-800 mb-2 text-center">
+        <!-- Summary View -->
+        <div v-if="!news.showFullDetails" @click="toggleFullDetails(news)" class="cursor-pointer">
+          <h2 class="text-3xl font-bold text-gray-800 mb-4 text-center">
             {{ news.title }}
           </h2>
-          <div v-if="news.image_url" class="mb-4 flex justify-center">
+          <div v-if="news.image_url" class="mb-6 flex justify-center">
             <img
               :src="news.image_url"
               alt="News Image"
-              class="news-image max-w-xs lg:max-w-4xl lg:h-48 rounded-lg object-cover shadow-lg"
+              class="w-full max-w-md h-48 object-cover rounded-xl"
             />
           </div>
-          <div class="mt-2 text-gray-600">
-            <p><strong>Likes:</strong> {{ news.likeCount }}</p>
-            <p><strong>Comments:</strong> {{ news.commentCount }}</p>
+          <div class="text-center text-gray-600">
+            <p class="mb-2"><span class="font-semibold">Likes:</span> {{ news.likeCount }}</p>
+            <p><span class="font-semibold">Comments:</span> {{ news.commentCount }}</p>
           </div>
         </div>
 
-        <!-- Full View: Topic, Content, Image, Likes, and Comments -->
+        <!-- Full Details View -->
         <div v-else>
           <!-- Title -->
-          <h2 class="text-2xl font-bold text-gray-800 mb-4 text-center">
+          <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">
             {{ news.title }}
           </h2>
 
-          <!-- Content and Image Section -->
-          <div class="flex flex-col lg:flex-row items-start gap-6">
-            <!-- Content Section -->
+          <!-- Content & Image Section -->
+          <div class="flex flex-col lg:flex-row gap-6">
+            <!-- Content -->
             <div class="flex-1">
-              <p class="text-gray-600 mb-4 text-lg leading-relaxed">
+              <p class="text-gray-700 text-lg leading-relaxed">
                 {{ news.content }}
               </p>
             </div>
-
-            <!-- Image Section -->
+            <!-- Image -->
             <div v-if="news.image_url" class="flex justify-center lg:justify-start">
               <img
                 :src="news.image_url"
                 alt="News Image"
-                class="news-image max-w-full lg:max-w-sm h-auto rounded-lg object-cover shadow-lg"
+                class="w-full max-w-sm h-auto object-cover rounded-xl shadow-md"
               />
             </div>
           </div>
 
-          <!-- Action Buttons: Like and Comments -->
-          <div class="flex items-center gap-4 mb-4 mt-4 flex-wrap">
+          <!-- Action Buttons -->
+          <div class="flex flex-wrap gap-4 justify-center mt-6">
             <button
               @click.stop="toggleLike(news.id)"
-              class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded"
+              class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition-all duration-200"
             >
               {{ news.user_liked ? "Unlike" : "Like" }} ({{ news.likeCount }})
             </button>
             <button
               @click="toggleComments(news.id)"
-              class="bg-gray-500 hover:bg-gray-600 text-white font-medium py-2 px-4 rounded"
+              class="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-6 rounded-lg transition-all duration-200"
             >
               {{ news.showComments ? "Hide Comments" : "Show Comments" }}
             </button>
           </div>
 
           <!-- Comments Section -->
-          <div v-if="news.showComments" class="bg-gray-100 p-6">
-            <h3 class="text-lg font-medium text-gray-800 mb-4">Comments</h3>
-            <div
-              class="max-h-48 overflow-y-auto mb-4 border border-gray-300 rounded-lg p-4 bg-white"
-            >
+          <div v-if="news.showComments" class="mt-6 bg-gray-100 rounded-xl p-6">
+            <h3 class="text-xl font-semibold text-gray-800 mb-4">Comments</h3>
+            <div class="max-h-64 overflow-y-auto mb-4 border border-gray-200 rounded-lg p-4 bg-white">
               <div
                 v-for="comment in news.comments"
                 :key="comment.id"
                 class="mb-4"
               >
                 <p class="text-gray-800">
-                  <strong>{{ comment.user_name }}:</strong> {{ comment.comment }}
+                  <span class="font-semibold">{{ comment.user_name }}:</span> {{ comment.comment }}
                 </p>
               </div>
             </div>
-            <div class="mt-4">
+            <div class="flex flex-col gap-2">
               <input
                 v-model="commentText"
                 placeholder="Add a comment"
-                class="w-full border border-gray-300 rounded-lg py-2 px-4 mb-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                class="w-full border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               <button
                 @click="addComment(news.id)"
-                class="bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded"
+                class="self-end bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-200"
               >
                 Comment
               </button>
             </div>
           </div>
 
+          <!-- Back to Summary Link -->
           <button
             @click="toggleFullDetails(news)"
-            class="mt-4 text-blue-500 hover:underline"
+            class="mt-6 block text-center text-blue-600 hover:underline"
           >
             Back to Summary
           </button>
@@ -228,20 +222,21 @@ onMounted(() => {
 
 <style scoped>
 .loader {
-  border: 4px solid #f3f3f3;
-  border-top: 4px solid #3498db;
+  color: #000;
+  width: 4px;
+  aspect-ratio: 1;
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  animation: spin 1s linear infinite;
+  box-shadow: 19px 0 0 7px, 38px 0 0 3px, 57px 0 0 0;
+  transform: translateX(-38px);
+  animation: l21 0.5s infinite alternate linear;
 }
 
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
+@keyframes l21 {
+  50% {
+    box-shadow: 19px 0 0 3px, 38px 0 0 7px, 57px 0 0 3px;
   }
   100% {
-    transform: rotate(360deg);
+    box-shadow: 19px 0 0 0, 38px 0 0 3px, 57px 0 0 7px;
   }
 }
 </style>

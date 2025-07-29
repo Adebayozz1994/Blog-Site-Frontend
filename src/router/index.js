@@ -31,7 +31,7 @@ const routes = [
     {path: "/passwordupdate", component: PasswordUpdate},
     {path: "/signup", component: RegisterPage},
     {path: "/news", component: UserNews},
-    {path: "/navbar", component: NavBar},
+    {path: "/newspage", component: NavBar},
     {path: "/settings", component: SettIngs},
     {path: "/external", component: ExternalNews},
     {path: "/about", component: AboutPage},

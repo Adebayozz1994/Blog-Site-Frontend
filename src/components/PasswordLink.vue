@@ -93,18 +93,18 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
-import { url } from '@/data'; // Assuming base URL is set here
+import { url } from '@/data'; 
 
 // Reactive properties
 const email = ref('');
 const message = ref('');
 const error = ref('');
 const loading = ref(false);
-const pageLoading = ref(true); // Page loader state
+const pageLoading = ref(true);
 
 // Function to send password reset link
 const sendPasswordResetLink = async () => {
-  loading.value = true; // Start button loader
+  loading.value = true; 
   message.value = '';
   error.value = '';
 
@@ -126,18 +126,18 @@ const sendPasswordResetLink = async () => {
     console.error('Error:', err.response?.data || err.message || err);
     error.value = err.response?.data?.message || 'Failed to send reset link. Please try again.';
   } finally {
-    loading.value = false; // Stop button loader
+    loading.value = false; 
   }
 };
 
 // Hide page loader after the page is fully loaded
 onMounted(() => {
   setTimeout(() => {
-    pageLoading.value = false; // Stop page loader
-  }, 1000); // Optional delay for smooth transition
+    pageLoading.value = false; 
+  }, 1000); 
 });
 </script>
 
 <style scoped>
-/* Optional styles for smooth loader transitions */
+
 </style>
